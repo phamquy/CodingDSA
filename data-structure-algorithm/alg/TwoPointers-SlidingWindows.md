@@ -17,6 +17,7 @@
 
 
 ## Two Pointers
+
 **What**: Use two indices that move through a sequence (or two sequences) in a coordinated way to eliminate search space in linear time.
 
 **When to use**:
