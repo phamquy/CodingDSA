@@ -473,6 +473,35 @@ class TTLCache:
 - Poor hit rate for most workloads
 - Rarely used in practice
 
+**Implementation**:
+```python
+from collections import OrderedDict
+
+class MRUCache:
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.cache = OrderedDict()
+    
+    def get(self, key: int) -> int:
+        if key not in self.cache:
+            return -1
+        # Move to end to mark as most recently used
+        self.cache.move_to_end(key)
+        return self.cache[key]
+    
+    def put(self, key: int, value: int) -> None:
+        if key in self.cache:
+            # Update existing key
+            self.cache.move_to_end(key)
+        self.cache[key] = value
+        if len(self.cache) > self.capacity:
+            # Remove most recently used (last item)
+            self.cache.popitem(last=True)
+```
+
+**Time Complexity**: O(1) for both get and put operations
+**Space Complexity**: O(capacity)
+
 ---
 
 ## Comparison Table
@@ -531,7 +560,7 @@ Many real-world systems combine strategies:
 ## Advanced Considerations
 
 ### 1. Cache Admission Policies
-- **TinyLFU**: Use bloom filters to track frequency with minimal space
+- **TinyLFU**: Use Bloom filters to track frequency with minimal space
 - **Window-TinyLFU**: Combine recency window with LFU main cache
 - **Admission threshold**: Only admit items accessed N times
 
