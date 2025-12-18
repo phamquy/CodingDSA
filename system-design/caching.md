@@ -351,13 +351,17 @@ class RandomCache:
         else:
             if len(self.cache) >= self.capacity:
                 # Randomly evict an item
+                # Note: list(self.cache.keys()) is O(n), making put operation O(n)
+                # For better performance, maintain a separate list of keys
                 random_key = random.choice(list(self.cache.keys()))
                 del self.cache[random_key]
             self.cache[key] = value
 ```
 
-**Time Complexity**: O(1) average for both operations (O(n) for random.choice in worst case)
+**Time Complexity**: O(1) for get, O(n) for put (due to list conversion in random.choice)
 **Space Complexity**: O(capacity)
+
+**Note**: The put operation is O(n) because converting dictionary keys to a list for random selection takes O(n) time. For true O(1) random eviction, maintain a separate list of keys and handle the bookkeeping on insertions/deletions.
 
 ---
 
@@ -478,7 +482,7 @@ class TTLCache:
 | **LRU** | O(1) get/put | Low (list+map) | General purpose, temporal locality | High | Medium |
 | **LFU** | O(1) get/put | Medium (freq tracking) | Popular content, long-term patterns | High | High |
 | **FIFO** | O(1) get/put | Low (queue) | Simple buffering, uniform access | Low-Medium | Low |
-| **Random** | O(1) average | Minimal | No pattern, simplicity | Low | Very Low |
+| **Random** | O(1) get, O(n) put | Minimal | No pattern, simplicity | Low | Very Low |
 | **TTL** | O(1) amortized | Medium (timestamps) | Time-sensitive data, sessions | N/A | Medium |
 | **MRU** | O(1) get/put | Low (list+map) | Cyclic patterns | Low-Medium | Medium |
 
