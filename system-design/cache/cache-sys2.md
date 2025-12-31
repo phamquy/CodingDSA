@@ -1,8 +1,4 @@
-# Article Suggestion: Architecting Caching in Distributed Systems
-
----
-
-### **Article Title Suggestion:** Beyond the Basics: Architecting Caching in Distributed Systems
+# Beyond the Basics: Architecting Caching in Distributed Systems
 
 ---
 

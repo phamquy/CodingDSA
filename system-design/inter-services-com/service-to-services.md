@@ -1,0 +1,3 @@
+- sync vs async
+- Do we need both?
+- Pull vs push
